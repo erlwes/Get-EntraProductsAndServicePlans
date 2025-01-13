@@ -1,4 +1,4 @@
-# EntraIDLicenseIdToProductName
+# EntraLicenseIdToProductName
 Designed to help easily find the product name associated with a specific GUID (Globally Unique Identifier) used in Microsoft licensing.
 The script retrieves and processes a lookup table from an online source, allowing you to search for product details using a GUID. 
 
