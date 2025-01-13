@@ -1,3 +1,34 @@
+<#PSScriptInfo
+
+    .VERSION 1.0.1
+    .GUID 66d8b653-3887-4839-941b-37d6f4f459ca
+    .AUTHOR Erlend Westervik
+    .COMPANYNAME
+    .COPYRIGHT
+    .TAGS Entra, Azure, EntraID, Licence, Licences, Product, ID, GUID, Service, Plan, O365, Office 365
+    .LICENSEURI
+    .PROJECTURI https://github.com/erlwes/EntraIDLicenseIdToProductName
+    .ICONURI
+    .EXTERNALMODULEDEPENDENCIES 
+    .REQUIREDSCRIPTS
+    .EXTERNALSCRIPTDEPENDENCIES
+    .RELEASENOTES
+        Version: 1.0.0 - Original published version
+        Version: 1.0.1 - Fixed so that HTML parse in PowerShell core too, not just Windows PowerShell
+#>
+
+<# 
+
+.DESCRIPTION 
+ Get product names from Entra licence id's 
+
+.PARAMETER GUID
+    Specifies the guid of the licence you want to look up.
+
+.PARAMETER ShowCompleteTable
+    Shows all products with their name, GUID's and more in a gridview (requires PowerShell ISE).
+
+#> 
 Param(
     [String]$GUID,
     [Switch]$ShowCompleteTable
