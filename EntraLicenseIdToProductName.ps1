@@ -1,13 +1,13 @@
 <#PSScriptInfo
 
-    .VERSION 1.0.1
+    .VERSION 1.0.2
     .GUID 66d8b653-3887-4839-941b-37d6f4f459ca
     .AUTHOR Erlend Westervik
     .COMPANYNAME
     .COPYRIGHT
     .TAGS Entra, Azure, EntraID, Licence, Licences, Product, ID, GUID, Service, Plan, O365, Office 365
     .LICENSEURI
-    .PROJECTURI https://github.com/erlwes/EntraIDLicenseIdToProductName
+    .PROJECTURI https://github.com/erlwes/EntraLicenseIdToProductName
     .ICONURI
     .EXTERNALMODULEDEPENDENCIES 
     .REQUIREDSCRIPTS
@@ -15,6 +15,7 @@
     .RELEASENOTES
         Version: 1.0.0 - Original published version
         Version: 1.0.1 - Fixed so that HTML parse in PowerShell core too, not just Windows PowerShell
+        Version: 1.0.2 - Rename git repo
 #>
 
 <# 
