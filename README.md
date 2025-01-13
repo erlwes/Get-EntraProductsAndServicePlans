@@ -21,7 +21,8 @@ Install-Script -Name EntraLicenseIdToProductName
 EntraLicenseIdToProductName.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06'
 ```
 
-![image](https://github.com/user-attachments/assets/aa5a6c06-06d2-4e36-b621-c6f692758b3a)
+![image](https://github.com/user-attachments/assets/afc27251-b3d9-49cc-9dbd-6f737f8fd075)
+
 
 
 ### 🔵 Example 2 - Display the complete table
@@ -29,4 +30,5 @@ EntraLicenseIdToProductName.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06'
 EntraLicenseIdToProductName.ps1 -ShowCompleteTable
 ```
 
-![image](https://github.com/user-attachments/assets/c4666dc2-4e98-40fd-8e56-da55f47252af)
+![image](https://github.com/user-attachments/assets/c51453b4-60e4-4983-b3ae-5178e4e07642)
+
