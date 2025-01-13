@@ -10,6 +10,12 @@ If the CSV already exsists, it will do the lookup directly vs. the local file.
 
 The intention is illustrate how to create the lookup-table, and then use it in other scripts, to display friendly productnames instead of GUID or string IDs. This script alone, has limited value.
 
+### Install
+```PowerShell
+Install-Script -Name EntraLicenseIdToProductName
+```
+
+
 ### 🔵 Example 1 - Lookup a single GUID/SkuID
 ```PowerShell
 .\LicenseIdToProductName.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06'
