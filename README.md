@@ -1,4 +1,4 @@
-# EntraLicenseIdToProductName
+# Get-EntraProductsAndServicePlans
 PowerShell script to map Microsoft Entra license GUIDs to friendly product names and vice versa. It downloads and caches the [official Microsoft CSV listing](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference) license product names, service plans, and identifiers.
 
 <img width="938" height="188" alt="image" src="https://github.com/user-attachments/assets/12cb339c-7dc2-47aa-b761-ef79a18a8196" />
