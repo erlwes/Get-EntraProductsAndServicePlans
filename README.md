@@ -1,34 +1,55 @@
 # EntraLicenseIdToProductName
-Designed to help easily find the product name associated with a specific GUID (Globally Unique Identifier) used in Microsoft licensing.
-The script retrieves and processes a lookup table from an online source, allowing you to search for product details using a GUID. 
+PowerShell script to map Microsoft Entra license GUIDs to friendly product names and vice versa. It downloads and caches the [official Microsoft CSV listing](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference) license product names, service plans, and identifiers.
 
-The complete product names and service plan identifiers for licensing in Entra ID and Office 365 is found here:
-https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference
-
-In short, the HTML-table is retrived from the above website, then parsed into a PowerShell-Object, and saved to disk as a CSV-file for next lookup.
-If the CSV already exsists, it will do the lookup directly vs. the local file.
-
-The intention is illustrate how to create the lookup-table, and then use it in other scripts, to display friendly productnames instead of GUID or string IDs. This script alone, has limited value.
+<img width="938" height="188" alt="image" src="https://github.com/user-attachments/assets/12cb339c-7dc2-47aa-b761-ef79a18a8196" />
 
 ### Install
 ```PowerShell
-Install-Script -Name EntraLicenseIdToProductName
+Install-Script -Name Get-EntraProductsAndServicePlans
 ```
 
-
-### 🔵 Example 1 - Lookup a single GUID/SkuID
+### Usage
 ```PowerShell
-EntraLicenseIdToProductName.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06'
+.\Get-EntraProductsAndServicePlans.ps1 [-GUID <regex>] [-ProductDisplayName <regex>] [-ServicePlanNames <regex>] [-ProductOnly] [-VerboseLogging] [-ForceDownload]
 ```
 
-![image](https://github.com/user-attachments/assets/afc27251-b3d9-49cc-9dbd-6f737f8fd075)
+### Parameters
+| Name                 | Type     | Description                                                        |
+| -------------------- | -------- | ------------------------------------------------------------------ |
+| `GUID`               | `regex`  | Regex to match Entra license GUIDs                                 |
+| `ProductDisplayName` | `regex`  | Regex to match the product display name (case-insensitive)         |
+| `ServicePlanNames`   | `regex`  | Regex to match service plan names or included friendly names       |
+| `ProductOnly`        | `switch` | If set, only shows product display names, string IDs, and GUIDs    |
+| `VerboseLogging`     | `switch` | Enables detailed output for debugging/logging                      |
+| `ForceDownload`      | `switch` | Forces a re-download of the CSV from Microsoft                     |
+| `PathLocalStore`     | `string` | Local path to store the downloaded CSV (default: script directory) |
 
-
-
-### 🔵 Example 2 - Display the complete table
+### Examples
 ```PowerShell
-EntraLicenseIdToProductName.ps1 -ShowCompleteTable
+# Lookup a specific license by GUID
+.\Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -ProductOnly
+
+# Open all results in a GUI grid view
+.\Get-EntraProductsAndServicePlans.ps1 | Out-GridView
+
+# Filter products with specific display name (exact match) and show all service plans
+.\Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "^Microsoft 365 E5$" | Select-Object -ExpandProperty Service_Plans_Included_Friendly_Names
+
+# Use regex to filter for education-related licenses
+.\Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "(faculty|students)"
+
+# Find products that include a specific service plan
+.\Get-EntraProductsAndServicePlans.ps1 | Where-Object {$_.Service_Plans_Included_Friendly_Names -match 'Microsoft Entra ID P2'} | select Product_Display_Name
+
+# Force download of the latest CSV and enable verbose output
+.\Get-EntraProductsAndServicePlans.ps1 -ForceDownload -VerboseLogging
 ```
 
-![image](https://github.com/user-attachments/assets/c51453b4-60e4-4983-b3ae-5178e4e07642)
+### Screenshots
+
+Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -VerboseLogging | select -First 2
+<img width="1306" height="448" alt="image" src="https://github.com/user-attachments/assets/da77bc37-b12a-4fb2-9c65-6cbb1347825d" />
+
+Get-EntraProductsAndServicePlans.ps1 | Out-GridView
+<img width="1407" height="631" alt="image" src="https://github.com/user-attachments/assets/79fa332b-b721-4e53-be1a-5c2e772239f6" />
 
