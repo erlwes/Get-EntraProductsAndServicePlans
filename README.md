@@ -11,7 +11,7 @@ Install-Script -Name Get-EntraProductsAndServicePlans
 
 ### Usage
 ```PowerShell
-.\Get-EntraProductsAndServicePlans.ps1 [-GUID <regex>] [-ProductDisplayName <regex>] [-ServicePlanNames <regex>] [-ProductOnly] [-VerboseLogging] [-ForceDownload]
+Get-EntraProductsAndServicePlans.ps1 [-GUID <regex>] [-ProductDisplayName <regex>] [-ServicePlanNames <regex>] [-ProductOnly] [-VerboseLogging] [-ForceDownload]
 ```
 
 ### Parameters
@@ -28,22 +28,22 @@ Install-Script -Name Get-EntraProductsAndServicePlans
 ### Examples
 ```PowerShell
 # Lookup a specific license by GUID
-.\Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -ProductOnly
+Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -ProductOnly
 
 # Open all results in a GUI grid view
-.\Get-EntraProductsAndServicePlans.ps1 | Out-GridView
+Get-EntraProductsAndServicePlans.ps1 | Out-GridView
 
 # Filter products with specific display name (exact match) and show all service plans
-.\Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "^Microsoft 365 E5$" | Select-Object -ExpandProperty Service_Plans_Included_Friendly_Names
+Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "^Microsoft 365 E5$" | Select-Object -ExpandProperty Service_Plans_Included_Friendly_Names
 
 # Use regex to filter for education-related licenses
-.\Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "(faculty|students)"
+Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "(faculty|students)"
 
 # Find products that include a specific service plan
-.\Get-EntraProductsAndServicePlans.ps1 | Where-Object {$_.Service_Plans_Included_Friendly_Names -match 'Microsoft Entra ID P2'} | select Product_Display_Name
+Get-EntraProductsAndServicePlans.ps1 | Where-Object {$_.Service_Plans_Included_Friendly_Names -match 'Microsoft Entra ID P2'} | select Product_Display_Name
 
 # Force download of the latest CSV and enable verbose output
-.\Get-EntraProductsAndServicePlans.ps1 -ForceDownload -VerboseLogging
+Get-EntraProductsAndServicePlans.ps1 -ForceDownload -VerboseLogging
 ```
 
 ### Screenshots
