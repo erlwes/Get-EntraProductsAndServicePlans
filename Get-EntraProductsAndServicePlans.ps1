@@ -1,6 +1,6 @@
 <#PSScriptInfo
 
-    .VERSION 1.1.1
+    .VERSION 1.1.2
     .GUID 66d8b653-3887-4839-941b-37d6f4f459ca
     .AUTHOR Erlend Westervik
     .COMPANYNAME
@@ -13,9 +13,10 @@
     .REQUIREDSCRIPTS
     .EXTERNALSCRIPTDEPENDENCIES
     .RELEASENOTES
-        Version: 1.0.2 - Original published version (EntraLicenseIDToProductName)
+        Version: 1.0.0 - Original published version (EntraLicenseIDToProductName)
         Version: 1.1.0 - Re-write script to download CSV-file from same page, now that this has become avaliable, using new property names from CSV, rather than from HTLM-table (no spaces - yay!)
         Version: 1.1.1 - Extend on logic to only check for new versions and download if nessasary + more parameters for searching directly, rather than using filters in gridview. This uses regexp with ignore case + hacked support for negate match by starting string with "!"
+        Version: 1.1.2 - Change default directory for the cache, so it is saved in $PSProfile-dir in a new folder called 'Lookups'. Making this a standard a cross my lookup-scripts.
         
 #>
 
@@ -68,7 +69,7 @@ Param(
     [switch]$ProductOnly,    
 
     [Parameter(ParameterSetName='1')][Parameter(ParameterSetName='2')][Parameter(ParameterSetName='3')][Parameter(ParameterSetName='Default')]
-    [string]$PathLocalStore = "$PSScriptRoot\Product names and service plan identifiers for licensing.csv",
+    [string]$PathLocalStore = "$(($profile | Split-Path))\Lookups\Product names and service plan identifiers for licensing.csv",
 
     [Parameter(ParameterSetName='Default')]
     [switch]$Dummy = $false
@@ -89,7 +90,7 @@ function ParseHtml($string) {
 }
 
 # Function for console-logging
- Function Write-Console {
+Function Write-Console {
     param(
         [ValidateSet(0, 1, 2, 3, 4)]
         [int]$Level,
@@ -103,7 +104,7 @@ function ParseHtml($string) {
         1 { $Status = 'Success'     ;$FGColor = 'Green'   }
         2 { $Status = 'Warning'     ;$FGColor = 'Yellow'  }
         3 { $Status = 'Error'       ;$FGColor = 'Red'     }
-        4 { $Status = 'Highlight'   ;$FGColor = 'Gray'    }        
+        4 { $Status = 'Highlight'   ;$FGColor = 'Gray'    }
         Default { $Status = ''      ;$FGColor = 'Black'   }
     }
     if ($VerboseLogging) {
@@ -122,8 +123,31 @@ function ParseHtml($string) {
     }
 }
 
+function New-DirectoryIfNotExist {
+    param([string]$Path)
+
+    # Removes filename from path
+    if ([System.IO.Path]::HasExtension($Path)) {
+        $Path = [System.IO.Path]::GetDirectoryName($Path)
+    }
+
+    # Create directory if it doesn't exist
+    if (!(Test-Path $Path)) {
+        try {
+            New-Item -ItemType Directory -Path $Path -ErrorAction Stop | Out-Null
+            Write-Console -Level 1 -Message "New-Item - Directory creted: '$Path'"
+        }
+        catch {
+            Write-Console -Level 3 -Message "New-Item - Failed to create new directory '$Path'. Error: $($_.Exception.Message)"
+        }
+    }
+}
+
 Write-Console -Level 0 "Start"
+
+#Create the "Lookups"-directory in PowerShell-profilefolder, if not already there.
 Write-Console -Level 0 "CSV: Location '$PathLocalStore' is used"
+New-DirectoryIfNotExist -Path $PathLocalStore
 
 # If -ForceDownload is set, set ReDownload to true also
 if ($ForceDownload) {
@@ -212,7 +236,7 @@ if ($LocalCopyCouldBeOutDated -or $ReDownload) {
     # If re-download parameter is used, or 
     if ($ReDownload -or $LocalCopyIsOutDated) {
         try {
-            Invoke-WebRequest -Uri $DownloadURL -OutFile "C:\Script\Product names and service plan identifiers for licensing.csv" -ErrorAction Stop
+            Invoke-WebRequest -Uri $DownloadURL -OutFile $PathLocalStore -ErrorAction Stop
             Write-Console -Level 1 "Invoke-WebRequest: Downloaded ($PathLocalStore)"
         }
         catch {
@@ -224,7 +248,7 @@ if ($LocalCopyCouldBeOutDated -or $ReDownload) {
 # Import CSV (same location regardless if it was must redownloaded or cache was used, so import it)
 if (!$ForceDownload) {
     try {
-        $Lookup = Import-Csv '.\Product names and service plan identifiers for licensing.csv' -Delimiter ',' -Encoding UTF8 -ErrorAction Stop
+        $Lookup = Import-Csv $PathLocalStore -Delimiter ',' -Encoding UTF8 -ErrorAction Stop
         Write-Console -Level 1 'CSV: Imported (Import-Csv)'
     }
     catch {
