@@ -2,21 +2,27 @@
 ![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/Get-EntraProductsAndServicePlans)
 
 # Get-EntraProductsAndServicePlans
-PowerShell script to map Microsoft Entra license GUIDs to friendly product names and vice versa. It downloads and caches the [official Microsoft CSV listing](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference) license product names, service plans, and identifiers.
+`Get-EntraProductsAndServicePlans` is a PowerShell script to map Microsoft Entra license GUIDs to friendly product names and vice versa. It downloads and caches the [official Microsoft CSV listing](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference) license product names, service plans, and identifiers.
 
-<img width="938" height="188" alt="image" src="https://github.com/user-attachments/assets/12cb339c-7dc2-47aa-b761-ef79a18a8196" />
+## 📦 Installation
 
-### Install
 ```PowerShell
 Install-Script -Name Get-EntraProductsAndServicePlans
 ```
 
-### Usage
+---
+
+## 🚀 Quickstart
 ```PowerShell
-Get-EntraProductsAndServicePlans.ps1 [-GUID <regex>] [-ProductDisplayName <regex>] [-ServicePlanNames <regex>] [-ProductOnly] [-VerboseLogging] [-ForceDownload]
+Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -ProductOnly
 ```
 
-### Parameters
+<img width="938" height="188" alt="image" src="https://github.com/user-attachments/assets/12cb339c-7dc2-47aa-b761-ef79a18a8196" />
+
+---
+
+## 💻 Parameters
+
 | Name                 | Type     | Description                                                        |
 | -------------------- | -------- | ------------------------------------------------------------------ |
 | `GUID`               | `regex`  | Regex to match Entra license GUIDs                                 |
@@ -27,32 +33,46 @@ Get-EntraProductsAndServicePlans.ps1 [-GUID <regex>] [-ProductDisplayName <regex
 | `ForceDownload`      | `switch` | Forces a re-download of the CSV from Microsoft                     |
 | `PathLocalStore`     | `string` | Local path to store the downloaded CSV (default: script directory) |
 
-### Examples
+---
+
+## 📋 Examples
+
+### `Lookup a specific license by GUID`
 ```PowerShell
-# Lookup a specific license by GUID
 Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -ProductOnly
+```
 
-# Open all results in a GUI grid view
+### `Open all results in a GUI grid view`
+```PowerShell
 Get-EntraProductsAndServicePlans.ps1 | Out-GridView
+```
 
-# Filter products with specific display name (exact match) and show all service plans
+### `Filter products with specific display name (exact match) and show all service plans`
+```PowerShell
 Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "^Microsoft 365 E5$" | Select-Object -ExpandProperty Service_Plans_Included_Friendly_Names
+```
 
-# Use regex to filter for education-related licenses
+### `Use regex to filter for education-related licenses`
+```PowerShell
 Get-EntraProductsAndServicePlans.ps1 -ProductDisplayName "(faculty|students)"
+```
 
-# Find products that include a specific service plan
+### `Find products that include a specific service plan`
+```PowerShell
 Get-EntraProductsAndServicePlans.ps1 | Where-Object {$_.Service_Plans_Included_Friendly_Names -match 'Microsoft Entra ID P2'} | select Product_Display_Name
+```
 
-# Force download of the latest CSV and enable verbose output
+### `Force download of the latest CSV and enable verbose output`
+```PowerShell
 Get-EntraProductsAndServicePlans.ps1 -ForceDownload -VerboseLogging
 ```
 
-### Screenshots
+---
 
-Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -VerboseLogging | select -First 2
+## ✂️ Screenshots
+
+`Get-EntraProductsAndServicePlans.ps1 -GUID '06ebc4ee-1bb5-47dd-8120-11324bc54e06' -VerboseLogging | select -First 2`
 <img width="1306" height="448" alt="image" src="https://github.com/user-attachments/assets/da77bc37-b12a-4fb2-9c65-6cbb1347825d" />
 
-Get-EntraProductsAndServicePlans.ps1 | Out-GridView
+`Get-EntraProductsAndServicePlans.ps1 | Out-GridView`
 <img width="1407" height="631" alt="image" src="https://github.com/user-attachments/assets/79fa332b-b721-4e53-be1a-5c2e772239f6" />
-
