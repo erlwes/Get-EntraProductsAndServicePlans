@@ -1,4 +1,6 @@
 ![PowerShell](https://img.shields.io/badge/PowerShell-5+-blue)
+![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/Get-EntraProductsAndServicePlans)
+
 # Get-EntraProductsAndServicePlans
 PowerShell script to map Microsoft Entra license GUIDs to friendly product names and vice versa. It downloads and caches the [official Microsoft CSV listing](https://learn.microsoft.com/en-us/entra/identity/users/licensing-service-plan-reference) license product names, service plans, and identifiers.
 
